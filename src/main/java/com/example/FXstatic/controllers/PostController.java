@@ -2,12 +2,15 @@ package com.example.FXstatic.controllers;
 
 import com.example.FXstatic.dto.PostReqDto;
 import com.example.FXstatic.models.Post;
+import com.example.FXstatic.service.impl.DocumentImpl;
 import com.example.FXstatic.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -47,7 +50,7 @@ public class PostController {
     public List<Post> getLatestPost() {
         return postService.getLatestPost();
     }
-    @GetMapping("public/get/{id}")
+        @GetMapping("public/get/{id}")
     public Post getLatestPost(@PathVariable Long id) {
         return postService.findAllById(id);
     }

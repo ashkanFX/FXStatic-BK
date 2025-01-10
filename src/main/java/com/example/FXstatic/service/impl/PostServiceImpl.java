@@ -17,6 +17,9 @@ public class PostServiceImpl {
     public PostRepo postRepo;
     @Autowired
     public UserRepo userRepo;
+    @Autowired
+    private DocumentImpl documentService;
+
 
     public Post creatPost(UserDetails userDetails, PostReqDto postReqDto) {
         Post post = new Post();
@@ -27,6 +30,7 @@ public class PostServiceImpl {
         post.setUser(user);
         return postRepo.save(post);
     }
+
 
     public Post updatePost(Long id, PostReqDto postReqDto) {
         Post post = postRepo.findById(id).orElseThrow(() -> new RuntimeException("not found"));
@@ -49,7 +53,10 @@ public class PostServiceImpl {
     }
 
     public Post findAllById(Long id) {
+            System.out.println("test");
+//        System.out.println(documentService.findByPostId(id));
         return postRepo.findById(id).orElseThrow();
+
     }
 
 //    public List<Post> getPostOfUser(String owner) {
