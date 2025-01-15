@@ -49,12 +49,12 @@ public class PostServiceImpl {
     }
 
     public List<Post> getLatestPost() {
+//        System.out.println(postRepo.findPostIds());
         return postRepo.getLatest();
     }
 
     public Post findAllById(Long id) {
-            System.out.println("test");
-//        System.out.println(documentService.findByPostId(id));
+
         return postRepo.findById(id).orElseThrow();
 
     }

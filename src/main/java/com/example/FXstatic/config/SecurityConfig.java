@@ -37,7 +37,7 @@ public class SecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, HttpSecurity disable) throws Exception {
         http.authorizeHttpRequests((requests) ->
                 requests.requestMatchers(HttpMethod.OPTIONS, "/api/admin/getusers").hasRole("admin").
-                        requestMatchers("/api/auth/public/**", "/api/post/public/**").
+                        requestMatchers("/api/auth/public/**", "/api/post/public/**", "/api/category/public/**").
                         permitAll().anyRequest()
                         .authenticated());
         http.exceptionHandling(exception
