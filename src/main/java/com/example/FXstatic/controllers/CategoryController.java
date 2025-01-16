@@ -20,7 +20,6 @@ public class CategoryController {
         categoryImpl.save(category);
     }
 
-
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable int id) {
         categoryImpl.delete(id);
@@ -29,6 +28,11 @@ public class CategoryController {
     @GetMapping("public/get/all")
     public List<Category> getAllPost() {
         return categoryImpl.find();
+    }
+
+    @GetMapping("get/{id}")
+    public Category getAllPost(@PathVariable int id) {
+        return categoryImpl.findById(id).orElseThrow();
     }
 
 }

@@ -18,6 +18,8 @@ public class PostServiceImpl {
     @Autowired
     public UserRepo userRepo;
     @Autowired
+    public CategoryPostImpl categoryPost;
+    @Autowired
     private DocumentImpl documentService;
 
 
@@ -28,6 +30,7 @@ public class PostServiceImpl {
         post.setContext(postReqDto.getContext());
         User user = userRepo.findByUserName(userDetails.getUsername()).orElseThrow();
         post.setUser(user);
+//        categoryPost.add(7, 3);
         return postRepo.save(post);
     }
 
