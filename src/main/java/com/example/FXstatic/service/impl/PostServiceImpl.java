@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl {
@@ -19,8 +20,8 @@ public class PostServiceImpl {
     public UserRepo userRepo;
     @Autowired
     public CategoryPostImpl categoryPost;
-    @Autowired
-    private DocumentImpl documentService;
+        @Autowired
+        private DocumentImpl documentService;
 
 
     public Post creatPost(UserDetails userDetails, PostReqDto postReqDto) {
@@ -30,8 +31,12 @@ public class PostServiceImpl {
         post.setContext(postReqDto.getContext());
         User user = userRepo.findByUserName(userDetails.getUsername()).orElseThrow();
         post.setUser(user);
-//        categoryPost.add(7, 3);
-        return postRepo.save(post);
+        post = postRepo.save(post);
+        Post finalPost = post;
+        postReqDto.getCategories().forEach(item -> {
+            categoryPost.add(finalPost.getId(), item);
+        });
+        return post;
     }
 
 
