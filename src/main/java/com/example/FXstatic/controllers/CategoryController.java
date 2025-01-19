@@ -1,5 +1,6 @@
 package com.example.FXstatic.controllers;
 
+import com.example.FXstatic.dto.CategoryIdDto;
 import com.example.FXstatic.dto.DatabaseDto;
 import com.example.FXstatic.models.Category;
 import com.example.FXstatic.service.impl.CategoryImpl;
@@ -36,9 +37,9 @@ public class CategoryController {
         return categoryImpl.findById(id).orElseThrow();
     }
 
-    @GetMapping("get/category/post")
-    public List<DatabaseDto> getPostOfCategory(@RequestBody List<Integer> cIds) {
-        return categoryImpl.getPostOfCategory(cIds);
+    @PostMapping("public/get/post")
+    public List<DatabaseDto> getPostOfCategory(@RequestBody CategoryIdDto categoryIdDto) {
+        return categoryImpl.getPostOfCategory(categoryIdDto);
     }
 
 }
