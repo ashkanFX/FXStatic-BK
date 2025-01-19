@@ -1,5 +1,6 @@
 package com.example.FXstatic.controllers;
 
+import com.example.FXstatic.dto.DatabaseDto;
 import com.example.FXstatic.models.Category;
 import com.example.FXstatic.service.impl.CategoryImpl;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,11 @@ public class CategoryController {
     @GetMapping("get/{id}")
     public Category getAllPost(@PathVariable int id) {
         return categoryImpl.findById(id).orElseThrow();
+    }
+
+    @GetMapping("get/category/post")
+    public List<DatabaseDto> getPostOfCategory(@RequestBody List<Integer> cIds) {
+        return categoryImpl.getPostOfCategory(cIds);
     }
 
 }

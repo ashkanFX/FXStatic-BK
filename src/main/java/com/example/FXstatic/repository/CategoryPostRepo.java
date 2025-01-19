@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CategoryPostRepo extends JpaRepository<CategoryPost, Integer> {
-    @Query(value = "SELECT p.title FROM category_post cp JOIN post p ON cp.p_id = p.id JOIN category c ON cp.c_id = c.id WHERE cp.c_id = :cId", nativeQuery = true)
-    List<String> findByPostByCategoryId(@Param("cId") int cId);
-
+    @Query(value = "SELECT p.id, p.title, p.description " +
+            "FROM category_post cp " +
+            "JOIN post p ON cp.p_id = p.id " +
+            "WHERE cp.c_id IN  (:cIds)", nativeQuery = true)
+    List<Object[]> findByPostByCategoryId(@Param("cIds") List<Integer> cIds);
 }

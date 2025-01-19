@@ -10,4 +10,5 @@ public class PostReqDto {
     String context;
     String description;
     List<Integer> categories;
+
 }
