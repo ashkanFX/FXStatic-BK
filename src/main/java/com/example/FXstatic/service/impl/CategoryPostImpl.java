@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryPostImpl {
@@ -31,14 +32,23 @@ public class CategoryPostImpl {
         }
     }
 
+    public void  getAllPostCategories(long Id) {
+        List<Object[]> results = categoryPostRepository.findCategoryByPostId(Id);
+//        return results.stream()
+//                .map(row -> new Category(
+//                        (Long) row[0],
+//                        (String) row[1]
+//                ))
+//                .collect(Collectors.toList());
+//        return categoryPostRepository.findCategoryByPostId(Id);
+    }
+
     public void add(long postId, int categoryId) {
         CategoryPost categoryPost = new CategoryPost();
         Post post = postRepo.findById(postId).orElse(null);
         categoryPost.setPost(post);
         Category category = categoryRepo.findById(categoryId).orElse(null);
-        categoryPost.setPost(post);
         categoryPost.setCategory(category);
         categoryPostRepository.save(categoryPost);
-//        System.out.println(categoryPostRepository.findByPostByCategoryId(3));
     }
 }

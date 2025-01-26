@@ -57,7 +57,10 @@ public class PostServiceImpl {
     }
 
     public List<Post> getLatestPost() {
-//        System.out.println(postRepo.findPostIds());
+        List<Post> posts = postRepo.getLatest();
+        posts.forEach(item -> {
+        categoryPost.getAllPostCategories(item.getId());
+        });
         return postRepo.getLatest();
     }
 
