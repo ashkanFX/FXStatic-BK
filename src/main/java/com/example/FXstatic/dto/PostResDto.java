@@ -27,5 +27,5 @@ public class PostResDto {
 
     private List<Document> document;
 
-    private List<Category> categories;
+    private List<CategoryOfPostDto> categories;
 }

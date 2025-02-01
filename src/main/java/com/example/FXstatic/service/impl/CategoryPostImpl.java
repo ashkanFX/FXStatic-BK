@@ -1,5 +1,6 @@
 package com.example.FXstatic.service.impl;
 
+import com.example.FXstatic.dto.CategoryOfPostDto;
 import com.example.FXstatic.models.Category;
 import com.example.FXstatic.models.CategoryPost;
 import com.example.FXstatic.models.Post;
@@ -24,7 +25,6 @@ public class CategoryPostImpl {
 
     public void getAllCategoryPosts() {
         List<CategoryPost> categoryPosts = categoryPostRepository.findAll();
-
         for (CategoryPost categoryPost : categoryPosts) {
             System.out.println("CategoryPost ID: " + categoryPost.getId());
             System.out.println("Post: " + categoryPost.getPost().getTitle());
@@ -32,16 +32,15 @@ public class CategoryPostImpl {
         }
     }
 
-    public void  getAllPostCategories(long Id) {
+    public List<CategoryOfPostDto>  getAllPostCategories(long Id) {
         List<Object[]> results = categoryPostRepository.findCategoryByPostId(Id);
-//        return results.stream()
-//                .map(row -> new Category(
-//                        (Long) row[0],
-//                        (String) row[1]
-//                ))
-//                .collect(Collectors.toList());
-//        return categoryPostRepository.findCategoryByPostId(Id);
-    }
+        return results.stream()
+                .map(row -> new CategoryOfPostDto(
+                        (int) row[0],
+                        (String) row[1]
+                ))
+                .collect(Collectors.toList());
+     }
 
     public void add(long postId, int categoryId) {
         CategoryPost categoryPost = new CategoryPost();

@@ -1,6 +1,7 @@
 package com.example.FXstatic.controllers;
 
 import com.example.FXstatic.dto.PostReqDto;
+import com.example.FXstatic.dto.PostResDto;
 import com.example.FXstatic.models.Post;
 import com.example.FXstatic.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,11 @@ public class PostController {
     }
 
     @GetMapping("public/get/latest")
-    public List<Post> getLatestPost() {
+    public List<PostResDto> getLatestPost() {
         return postService.getLatestPost();
     }
-        @GetMapping("public/get/{id}")
+
+    @GetMapping("public/get/{id}")
     public Post getLatestPost(@PathVariable Long id) {
         return postService.findAllById(id);
     }

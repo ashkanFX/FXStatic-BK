@@ -1,6 +1,7 @@
 package com.example.FXstatic.service.impl;
 
 import com.example.FXstatic.dto.PostReqDto;
+import com.example.FXstatic.dto.PostResDto;
 import com.example.FXstatic.models.Post;
 import com.example.FXstatic.models.User;
 import com.example.FXstatic.repository.PostRepo;
@@ -20,8 +21,8 @@ public class PostServiceImpl {
     public UserRepo userRepo;
     @Autowired
     public CategoryPostImpl categoryPost;
-        @Autowired
-        private DocumentImpl documentService;
+    @Autowired
+    private DocumentImpl documentService;
 
 
     public Post creatPost(UserDetails userDetails, PostReqDto postReqDto) {
@@ -56,12 +57,19 @@ public class PostServiceImpl {
         return postRepo.findAll();
     }
 
-    public List<Post> getLatestPost() {
+    public List<PostResDto> getLatestPost() {
         List<Post> posts = postRepo.getLatest();
-        posts.forEach(item -> {
-        categoryPost.getAllPostCategories(item.getId());
-        });
-        return postRepo.getLatest();
+        return posts.stream().map(item -> {
+            PostResDto postResDto = new PostResDto();
+            postResDto.setTitle(item.getTitle());
+            postResDto.setContext(item.getContext());
+            postResDto.setUser(item.getUser());
+            postResDto.setDescription(item.getDescription());
+            postResDto.setDocument(item.getDocument());
+            postResDto.setCategories(categoryPost.getAllPostCategories(item.getId()));
+            return postResDto;
+        }).collect(Collectors.toList());
+
     }
 
     public Post findAllById(Long id) {
