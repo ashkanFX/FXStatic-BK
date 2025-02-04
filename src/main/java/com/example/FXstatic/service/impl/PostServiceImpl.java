@@ -46,6 +46,10 @@ public class PostServiceImpl {
         post.setTitle(postReqDto.getTitle());
         post.setDescription(postReqDto.getDescription());
         post.setContext(postReqDto.getContext());
+
+        postReqDto.getCategories().forEach(item -> {
+            categoryPost.add(post.getId(), item);
+        });
         return postRepo.save(post);
     }
 
@@ -62,6 +66,7 @@ public class PostServiceImpl {
         return posts.stream().map(item -> {
             PostResDto postResDto = new PostResDto();
             postResDto.setTitle(item.getTitle());
+            postResDto.setId(item.getId());
             postResDto.setContext(item.getContext());
             postResDto.setUser(item.getUser());
             postResDto.setDescription(item.getDescription());
@@ -72,15 +77,11 @@ public class PostServiceImpl {
 
     }
 
-    public Post findAllById(Long id) {
-
+    public Post findById(Long id) {
         return postRepo.findById(id).orElseThrow();
 
     }
 
-//    public List<Post> getPostOfUser(String owner) {
-//        return postRepo.findPostsByOwnerUser(owner);
-//    }
 
 
 }

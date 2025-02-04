@@ -51,7 +51,7 @@ public class PostController {
 
     @GetMapping("public/get/{id}")
     public Post getLatestPost(@PathVariable Long id) {
-        return postService.findAllById(id);
+        return postService.findById(id);
     }
 
 //    @GetMapping("/get/{id}")
