@@ -25,7 +25,7 @@ import java.util.List;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class User{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")

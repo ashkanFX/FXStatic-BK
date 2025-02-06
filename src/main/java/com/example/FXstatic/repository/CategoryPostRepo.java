@@ -13,6 +13,7 @@ public interface CategoryPostRepo extends JpaRepository<CategoryPost, Integer> {
             "JOIN post p ON cp.p_id = p.id " +
             "WHERE cp.c_id IN  (:cIds)", nativeQuery = true)
     List<Object[]> findByPostByCategoryId(@Param("cIds") List<Integer> cIds);
+
     @Query(value = "SELECT c.id, c.name  " +
             "FROM category_post cp " +
             "JOIN category c ON cp.c_id = c.id " +

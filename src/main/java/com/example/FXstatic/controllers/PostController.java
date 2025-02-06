@@ -33,12 +33,6 @@ public class PostController {
         postService.deletePost(id);
     }
 
-//    @GetMapping()
-//    public List<Post> getPostOfUser(@AuthenticationPrincipal UserDetails userDetails) {
-//        String name = userDetails.getUsername();
-//        return postService.getPostOfUser(name);
-//    }
-
     @GetMapping("get/all")
     public List<Post> getAllPost() {
         return postService.getAllPost();
@@ -54,8 +48,4 @@ public class PostController {
         return postService.findById(id);
     }
 
-//    @GetMapping("/get/{id}")
-//    public List<Post> getPostByUserId(@PathVariable String id) {
-//        return postService.getPostOfUser(id);
-//    }
 }

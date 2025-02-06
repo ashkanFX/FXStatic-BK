@@ -16,7 +16,4 @@ public class Category {
     private String name;
 
     private int active;
-
-
-
 }

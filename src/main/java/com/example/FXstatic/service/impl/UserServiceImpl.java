@@ -16,9 +16,6 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl {
 
-//    @Value("${frontend.url}")
-//    String frontendUrl;
-
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -28,14 +25,6 @@ public class UserServiceImpl {
     @Autowired
     RoleRepo roleRepository;
 
-//    @Autowired
-//    PasswordResetTokenRepository passwordResetTokenRepository;
-//
-//    @Autowired
-//    EmailService emailService;
-//
-//    @Autowired
-//    TotpService totpService;
 
     public void updateUserRole(Long userId, String roleName) {
         User user = userRepository.findById(userId).orElseThrow(()
@@ -165,7 +154,6 @@ public class UserServiceImpl {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
 
 
 //    public User registerUser(User user) {

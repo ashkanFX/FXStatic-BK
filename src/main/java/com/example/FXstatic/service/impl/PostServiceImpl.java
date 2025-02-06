@@ -21,8 +21,6 @@ public class PostServiceImpl {
     public UserRepo userRepo;
     @Autowired
     public CategoryPostImpl categoryPost;
-    @Autowired
-    private DocumentImpl documentService;
 
 
     public Post creatPost(UserDetails userDetails, PostReqDto postReqDto) {
@@ -81,7 +79,6 @@ public class PostServiceImpl {
         return postRepo.findById(id).orElseThrow();
 
     }
-
 
 
 }

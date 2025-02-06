@@ -38,13 +38,7 @@ public class CategoryImpl {
 
     public List<DatabaseDto> getPostOfCategory(CategoryIdDto categoryIdDto) {
         List<Object[]> results = categoryPostRepo.findByPostByCategoryId(categoryIdDto.getId());
-        return results.stream()
-                .map(row -> new DatabaseDto(
-                        (Long) row[0],
-                        (String) row[1],
-                        (String) row[2]
-                ))
-                .collect(Collectors.toList());
+        return results.stream().map(row -> new DatabaseDto((Long) row[0], (String) row[1], (String) row[2])).collect(Collectors.toList());
 
     }
 

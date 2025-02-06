@@ -32,7 +32,7 @@ public class CategoryPostImpl {
         }
     }
 
-    public List<CategoryOfPostDto>  getAllPostCategories(long Id) {
+    public List<CategoryOfPostDto> getAllPostCategories(long Id) {
         List<Object[]> results = categoryPostRepository.findCategoryByPostId(Id);
         return results.stream()
                 .map(row -> new CategoryOfPostDto(
@@ -40,7 +40,7 @@ public class CategoryPostImpl {
                         (String) row[1]
                 ))
                 .collect(Collectors.toList());
-     }
+    }
 
     public void add(long postId, int categoryId) {
         CategoryPost categoryPost = new CategoryPost();

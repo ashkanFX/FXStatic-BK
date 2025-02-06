@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Table(name = "roles")
-public class Role{
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

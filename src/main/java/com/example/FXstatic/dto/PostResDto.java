@@ -1,6 +1,5 @@
 package com.example.FXstatic.dto;
 
-import com.example.FXstatic.models.Category;
 import com.example.FXstatic.models.Document;
 import com.example.FXstatic.models.User;
 import lombok.Data;

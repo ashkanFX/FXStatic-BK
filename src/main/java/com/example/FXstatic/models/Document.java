@@ -15,7 +15,7 @@ public class Document {
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    @Column(length = 90000) // Adjust the length accordingly
+    @Column(length = 90000)
     @Lob
     private byte[] Content;
     @ManyToOne
@@ -42,11 +42,6 @@ public class Document {
 
     @Override
     public String toString() {
-        return "Document{" +
-                "id=" + id +
-                ", Content=" + Arrays.toString(Content) +
-                ", post=" + post +
-                ", fileName='" + fileName + '\'' +
-                '}';
+        return "Document{" + "id=" + id + ", Content=" + Arrays.toString(Content) + ", post=" + post + ", fileName='" + fileName + '\'' + '}';
     }
 }
