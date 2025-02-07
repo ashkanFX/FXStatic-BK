@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CategoryPostRepo extends JpaRepository<CategoryPost, Integer> {
-    @Query(value = "SELECT p.id, p.title, p.description " +
+    @Query(value = "SELECT distinct p.id, p.title, p.description " +
             "FROM category_post cp " +
             "JOIN post p ON cp.p_id = p.id " +
             "WHERE cp.c_id IN  (:cIds)", nativeQuery = true)

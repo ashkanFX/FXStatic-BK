@@ -1,8 +1,6 @@
 package com.example.FXstatic.controllers;
 
 import com.example.FXstatic.models.Document;
-import com.example.FXstatic.models.Post;
-import com.example.FXstatic.repository.PostRepo;
 import com.example.FXstatic.service.impl.DocumentImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,18 +17,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DocumentController {
     private final DocumentImpl documentService;
-    private final PostRepo postRepository;
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   @RequestParam("postId") Long postId) throws IOException {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("User not found"));
-        Document document = new Document();
-        document.setFileName(file.getOriginalFilename());
-        document.setPost(post);
-        document.setContent(file.getBytes());
-        documentService.save(document);
-        return "oke bod";
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("postId") Long postId) throws IOException {
+        try {
+            documentService.save(file, postId);
+            return "oke bod";
+        } catch (Exception e) {
+            throw new IOException();
+        }
     }
 
     @PostMapping("/get")

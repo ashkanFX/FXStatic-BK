@@ -1,7 +1,9 @@
 package com.example.FXstatic.service.impl;
 
 import com.example.FXstatic.models.Document;
+import com.example.FXstatic.models.Post;
 import com.example.FXstatic.repository.DocumentRepository;
+import com.example.FXstatic.repository.PostRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,17 +16,20 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DocumentImpl {
     private final DocumentRepository documentRepository;
+    private final PostRepo postRepository;
 
 
-    public void saveFile(MultipartFile multipartFile) throws IOException {
-        Document fileEntity = new Document();
-        fileEntity.setContent(multipartFile.getBytes());
-        documentRepository.save(fileEntity);
-    }
+    public void save(MultipartFile file, Long postId) throws IOException {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("User not found"));
+//        if (documentRepository.findByPost(post.getId()).isEmpty()) {
+            Document document = new Document();
 
-    public void save(Document document) {
-        documentRepository.save(document);
+            document.setFileName(file.getOriginalFilename());
+            document.setPost(post);
+            document.setContent(file.getBytes());
 
+            documentRepository.save(document);
+//        }
     }
 
     public List<Document> find() {

@@ -45,9 +45,18 @@ public class CategoryPostImpl {
     public void add(long postId, int categoryId) {
         CategoryPost categoryPost = new CategoryPost();
         Post post = postRepo.findById(postId).orElse(null);
-        categoryPost.setPost(post);
-        Category category = categoryRepo.findById(categoryId).orElse(null);
-        categoryPost.setCategory(category);
-        categoryPostRepository.save(categoryPost);
+        boolean isUsed = false;
+        for (CategoryOfPostDto allPostCategory : getAllPostCategories(postId)) {
+            if (allPostCategory.getId() == categoryId) {
+                isUsed = true;
+                break;
+            }
+        }
+        if (!isUsed) {
+            categoryPost.setPost(post);
+            Category category = categoryRepo.findById(categoryId).orElse(null);
+            categoryPost.setCategory(category);
+            categoryPostRepository.save(categoryPost);
+        }
     }
 }

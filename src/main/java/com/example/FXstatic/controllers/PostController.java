@@ -34,7 +34,7 @@ public class PostController {
     }
 
     @GetMapping("get/all")
-    public List<Post> getAllPost() {
+    public List<PostResDto> getAllPost() {
         return postService.getAllPost();
     }
 

@@ -28,13 +28,16 @@ public class PostServiceImpl {
         post.setTitle(postReqDto.getTitle());
         post.setDescription(postReqDto.getDescription());
         post.setContext(postReqDto.getContext());
+
         User user = userRepo.findByUserName(userDetails.getUsername()).orElseThrow();
         post.setUser(user);
         post = postRepo.save(post);
         Post finalPost = post;
+
         postReqDto.getCategories().forEach(item -> {
             categoryPost.add(finalPost.getId(), item);
         });
+
         return post;
     }
 
@@ -55,8 +58,21 @@ public class PostServiceImpl {
         postRepo.deleteById(id);
     }
 
-    public List<Post> getAllPost() {
-        return postRepo.findAll();
+    public List<PostResDto> getAllPost() {
+        List<Post> posts = postRepo.findAll();
+        return posts.stream().map(item -> {
+            PostResDto postResDto = new PostResDto();
+            postResDto.setTitle(item.getTitle());
+            postResDto.setId(item.getId());
+            postResDto.setUpdateAt(item.getUpdateAt());
+            postResDto.setCreateAt(item.getCreateAt());
+            postResDto.setContext(item.getContext());
+            postResDto.setUser(item.getUser());
+            postResDto.setDescription(item.getDescription());
+            postResDto.setDocument(item.getDocument());
+            postResDto.setCategories(categoryPost.getAllPostCategories(item.getId()));
+            return postResDto;
+        }).collect(Collectors.toList());
     }
 
     public List<PostResDto> getLatestPost() {
