@@ -47,7 +47,6 @@ public class PostServiceImpl {
         post.setTitle(postReqDto.getTitle());
         post.setDescription(postReqDto.getDescription());
         post.setContext(postReqDto.getContext());
-
         postReqDto.getCategories().forEach(item -> {
             categoryPost.add(post.getId(), item);
         });
@@ -64,6 +63,7 @@ public class PostServiceImpl {
             PostResDto postResDto = new PostResDto();
             postResDto.setTitle(item.getTitle());
             postResDto.setId(item.getId());
+            postResDto.setCountOfView(item.getCountOfView());
             postResDto.setUpdateAt(item.getUpdateAt());
             postResDto.setCreateAt(item.getCreateAt());
             postResDto.setContext(item.getContext());
@@ -83,6 +83,7 @@ public class PostServiceImpl {
             postResDto.setId(item.getId());
             postResDto.setContext(item.getContext());
             postResDto.setUser(item.getUser());
+            postResDto.setCountOfView(item.getCountOfView());
             postResDto.setDescription(item.getDescription());
             postResDto.setDocument(item.getDocument());
             postResDto.setCategories(categoryPost.getAllPostCategories(item.getId()));
@@ -91,10 +92,20 @@ public class PostServiceImpl {
 
     }
 
-    public Post findById(Long id) {
-        return postRepo.findById(id).orElseThrow();
-
+    public PostResDto findById(Long id) {
+        PostResDto postResDto = new PostResDto();
+        Post post = postRepo.findById(id).orElseThrow();
+        postResDto.setTitle(post.getTitle());
+        postResDto.setId(post.getId());
+        postResDto.setContext(post.getContext());
+        postResDto.setCountOfView(post.getCountOfView());
+        postResDto.setUser(post.getUser());
+        postResDto.setDescription(post.getDescription());
+        postResDto.setDocument(post.getDocument());
+        postResDto.setCategories(categoryPost.getAllPostCategories(post.getId()));
+        post.setCountOfView(post.getCountOfView() + 1);
+        postRepo.save(post);
+        return postResDto;
     }
-
 
 }

@@ -2,6 +2,7 @@ package com.example.FXstatic.controllers;
 
 import com.example.FXstatic.models.Document;
 import com.example.FXstatic.service.impl.DocumentImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class DocumentController {
     private final DocumentImpl documentService;
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("postId") Long postId) throws IOException {
+    public String handleFileUpload( @RequestParam("file") MultipartFile file, @RequestParam("postId") Long postId) throws IOException {
         try {
             documentService.save(file, postId);
             return "oke bod";

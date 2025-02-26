@@ -1,10 +1,15 @@
 package com.example.FXstatic.controllers;
 
+import com.example.FXstatic.Exception.ResourceNotFoundException;
 import com.example.FXstatic.dto.CategoryIdDto;
 import com.example.FXstatic.dto.DatabaseDto;
 import com.example.FXstatic.models.Category;
 import com.example.FXstatic.service.impl.CategoryImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +21,20 @@ public class CategoryController {
     final private CategoryImpl categoryImpl;
 
     @PostMapping()
-    public void creatPost(@RequestBody Category category) {
+    public ResponseEntity<String> creatPost(@Valid @RequestBody Category category, BindingResult result) {
+        if (result.hasErrors()) {
+            String errorMessage = result.getAllErrors().get(0).getDefaultMessage();
+            throw  new ResourceNotFoundException(errorMessage);
+        }
         categoryImpl.save(category);
+        return new ResponseEntity<>("Resource created successfully", HttpStatus.CREATED);
+
     }
 
     @DeleteMapping("/{id}")
+
     public void deletePost(@PathVariable int id) {
+
         categoryImpl.delete(id);
     }
 

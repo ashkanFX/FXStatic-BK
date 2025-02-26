@@ -18,6 +18,8 @@ public class PostResDto {
 
     private String description;
 
+    private int countOfView;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;

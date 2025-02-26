@@ -34,10 +34,16 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
+    private int countOfView;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Document> document;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
