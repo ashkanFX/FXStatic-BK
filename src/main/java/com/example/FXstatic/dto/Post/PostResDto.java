@@ -1,5 +1,6 @@
-package com.example.FXstatic.dto;
+package com.example.FXstatic.dto.Post;
 
+import com.example.FXstatic.dto.CategoryOfPostDto;
 import com.example.FXstatic.models.Document;
 import com.example.FXstatic.models.User;
 import lombok.Data;
@@ -9,24 +10,14 @@ import java.util.List;
 
 @Data
 public class PostResDto {
-
     private long id;
-
     private String title;
-
     private String context;
-
     private String description;
-
     private int countOfView;
-
     private LocalDateTime createAt;
-
     private LocalDateTime updateAt;
-
     private User user;
-
     private List<Document> document;
-
     private List<CategoryOfPostDto> categories;
 }

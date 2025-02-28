@@ -1,10 +1,13 @@
 package com.example.FXstatic.controllers;
 
-import com.example.FXstatic.dto.PostReqDto;
-import com.example.FXstatic.dto.PostResDto;
+import com.example.FXstatic.dto.Post.PostReqDto;
+import com.example.FXstatic.dto.Post.PostResDto;
 import com.example.FXstatic.models.Post;
 import com.example.FXstatic.service.impl.PostServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +22,12 @@ public class PostController {
     private PostServiceImpl postService;
 
     @PostMapping()
-    public Post creatPost(@RequestBody PostReqDto postReqDto, @AuthenticationPrincipal UserDetails userDetails) {
-        return postService.creatPost(userDetails, postReqDto);
+    public ResponseEntity<?> createPost(@Valid @RequestBody PostReqDto postReqDto,
+                                        @AuthenticationPrincipal UserDetails userDetails) {
+        Post post = postService.creatPost(userDetails, postReqDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
+
 
     @PutMapping("/{id}")
     public Post updatePost(@PathVariable Long id, @RequestBody PostReqDto postReqDto) {

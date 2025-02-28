@@ -1,11 +1,13 @@
 package com.example.FXstatic.service.impl;
 
-import com.example.FXstatic.dto.PostReqDto;
-import com.example.FXstatic.dto.PostResDto;
+import com.example.FXstatic.Exception.ResourceNotFoundException;
+import com.example.FXstatic.dto.Post.PostReqDto;
+import com.example.FXstatic.dto.Post.PostResDto;
 import com.example.FXstatic.models.Post;
 import com.example.FXstatic.models.User;
 import com.example.FXstatic.repository.PostRepo;
 import com.example.FXstatic.repository.UserRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -23,20 +25,18 @@ public class PostServiceImpl {
     public CategoryPostImpl categoryPost;
 
 
+    @Transactional
     public Post creatPost(UserDetails userDetails, PostReqDto postReqDto) {
-        Post post = new Post();
-        post.setTitle(postReqDto.getTitle());
-        post.setDescription(postReqDto.getDescription());
-        post.setContext(postReqDto.getContext());
+        User user = userRepo.findByUserName(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        Post post = postRepo.save(convertToEntity(postReqDto, user));
 
-        User user = userRepo.findByUserName(userDetails.getUsername()).orElseThrow();
-        post.setUser(user);
-        post = postRepo.save(post);
-        Post finalPost = post;
-
-        postReqDto.getCategories().forEach(item -> {
-            categoryPost.add(finalPost.getId(), item);
-        });
+        if (postReqDto.getCategories() != null && !postReqDto.getCategories().isEmpty()) {
+            postReqDto.getCategories().forEach(item -> {
+                categoryPost.add(post.getId(), item);
+            });
+        } else {
+            throw new ResourceNotFoundException("Category not found");
+        }
 
         return post;
     }
@@ -106,6 +106,10 @@ public class PostServiceImpl {
         post.setCountOfView(post.getCountOfView() + 1);
         postRepo.save(post);
         return postResDto;
+    }
+
+    public Post convertToEntity(PostReqDto dto, User user) {
+        return Post.builder().title(dto.getTitle()).context(dto.getContext()).description(dto.getDescription()).countOfView(0).user(user).build();
     }
 
 }

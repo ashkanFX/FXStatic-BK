@@ -2,7 +2,7 @@ package com.example.FXstatic.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -10,29 +10,37 @@ import org.hibernate.validator.constraints.Length;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder  // Enables Builder Pattern for easy object creation
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+    @NotNull(message = "Title cannot be null")
+    @Length(max = 100, message = "Title cannot exceed 100 characters")
     private String title;
 
-    @Length(max = 200)
-    @NotNull
+    @NotNull(message = "Context cannot be null")
+    @Length(max = 200, message = "Context cannot exceed 200 characters")
     private String context;
 
     @Lob
-    @NotNull
+    @NotNull(message = "Description cannot be null")
     private String description;
+
 
     @CreationTimestamp
     private LocalDateTime createAt;
 
     @UpdateTimestamp
     private LocalDateTime updateAt;
+
 
     private int countOfView;
 
