@@ -24,8 +24,24 @@ npm start
 Endpoints:
 
 - `GET /health` — health check
-
+- `GET /api/items` — list items
+- `GET /api/items/:id` — get item by id
+- `POST /api/items` — create item
+- `PUT /api/items/:id` — update item
+- `DELETE /api/items/:id` — delete item
 - `POST /api/post` — echo posted object (returns id + createdAt)
+
+Middleware and features:
+
+- `helmet` — secure HTTP headers
+- `cors` — cross-origin resource sharing
+- `express-rate-limit` — rate limiting
+- `morgan` — request logging
+- `compression` — gzip response compression
+- `multer` — file upload support
+- `zod` — request validation schema definitions
+- `jsonwebtoken` — JWT support installed for auth
+- `swagger-ui-express` + `swagger-jsdoc` — Swagger/OpenAPI docs support installed
 
 Project structure (added):
 
@@ -34,8 +50,8 @@ Project structure (added):
 	- `services/` — business logic
 	- `models/` — data access placeholders
   - `repository/` — DB repositories (pg)
-  - `routes/` — route definitions (index.js)
-  - `middleware/` — express middleware (error handler)
+  - `routes/` — route definitions
+  - `middleware/` — express middleware (error handler, validation)
   - `config/` — configuration
   - `utils/` — helpers (logger)
 - `tests/` — test files

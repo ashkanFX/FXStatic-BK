@@ -4,7 +4,7 @@
   "description": "Express API scaffold for FXStatic-BK",
   "main": "src/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "s": "node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc -p tsconfig.json",
     "prisma:generate": "prisma generate",
@@ -36,6 +36,8 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^20.5.1",
     "@types/pg": "^8.20.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "husky": "^8.0.3",
     "nodemon": "^3.1.14",
     "prisma": "^5.5.0",

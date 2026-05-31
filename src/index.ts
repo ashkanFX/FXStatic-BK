@@ -3,6 +3,8 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 import config from './config';
 import routes from './routes/index';
 import errorHandler from './middleware/errorHandler';
@@ -27,6 +29,24 @@ app.use(limiter);
 app.use(express.json());
 
 app.get('/health', (_req: Request, res: Response) => res.json({ status: 'ok' }));
+
+// Swagger / OpenAPI setup
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'FXStatic-BK API',
+      version: '1.0.0',
+      description: 'API documentation (OpenAPI)'
+    },
+    servers: [{ url: `http://localhost:${config.port}` }]
+  },
+  // Point to the API routes for JSDoc comments if you add them later
+  apis: ['src/routes/**/*.ts', 'src/controllers/**/*.ts']
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api', routes);
 
