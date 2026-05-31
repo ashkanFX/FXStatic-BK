@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run TypeScript build before committing
+npm run build || {
+  echo "Build failed — aborting commit"
+  exit 1
+}
