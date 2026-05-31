@@ -1,9 +1,9 @@
-require('dotenv').config();
+import 'dotenv/config';
 
 const config = {
-  port: process.env.PORT || 3000,
+  port: Number(process.env.PORT) || 3000,
   env: process.env.NODE_ENV || 'development',
   databaseUrl: process.env.DATABASE_URL || null
 };
 
-module.exports = config;
+export default config;
