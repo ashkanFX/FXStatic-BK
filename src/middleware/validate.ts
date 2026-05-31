@@ -23,3 +23,11 @@ const itemSchema = z.object({
 });
 
 export const validateItem = validate(itemSchema, 'body');
+
+const userSchema = z.object({
+  email: z.string().email({ message: 'Field "email" must be a valid email address' }),
+  name: z.string().optional(),
+  password: z.string().min(6, { message: 'Field "password" must be at least 6 characters' }),
+});
+
+export const validateUser = validate(userSchema, 'body');
