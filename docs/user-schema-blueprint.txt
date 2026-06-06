@@ -1,0 +1,90 @@
+User Schema — Blueprint
+
+=== Current State ===
+| Field     | Type       | Constraints              | Notes                    |
+|-----------|------------|--------------------------|--------------------------|
+| id        | Int        | PK, autoincrement        |                          |
+| email     | String     | @unique, required        | Validated as email       |
+| name      | String?    | optional                 |                          |
+| password  | String     | required, min 6 chars    | Plain text — needs hashing |
+| createdAt | DateTime   | @default(now())          | mapped as created_at     |
+
+=== Issues ===
+1. Password stored in plain text — no hashing (bcrypt not in deps)
+2. No updatedAt — can't track modifications
+3. No role/status fields — can't authorize or disable users
+4. No refresh token / auth system — JWT is in deps but unused
+5. PUT route validates full schema — forces all fields including password on partial update
+6. No profile fields — avatar, bio, etc. missing
+7. No standalone auth routes (login, register, refresh, logout)
+
+=== Proposed Schema ===
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String?
+  password   String
+  role       Role     @default(USER)
+  avatar     String?
+  bio        String?
+  isActive   Boolean  @default(true)
+  lastLogin  DateTime?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+=== JWT Table Schema ===
+model Jwt {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  type      JwtType  @default(ACCESS)
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("jwts")
+}
+
+enum JwtType {
+  ACCESS
+}
+
+=== Auth Endpoints ===
+| Method | Path                  | Description                          | Auth Required |
+|--------|-----------------------|--------------------------------------|---------------|
+| POST   | /api/auth/register    | Create account, return token         | No            |
+| POST   | /api/auth/login       | Email + password, return token       | No            |
+| POST   | /api/auth/logout      | Invalidate token (delete from DB)    | Yes           |
+| GET    | /api/auth/me          | Get current user profile             | Yes           |
+
+=== Token Design ===
+- JWT signed with ACCESS_TOKEN_SECRET
+- Stored in `jwts` table on issue, deleted on logout / expiry
+- Middleware checks: valid signature + exists in DB (not revoked)
+- Payload: { userId, role } — no sensitive data
+- Expiry: configurable (default 15 min)
+
+=== Proposed User Endpoints ===
+| Method | Path              | Changes                                                       |
+|--------|-------------------|---------------------------------------------------------------|
+| GET    | /api/users        | add role, isActive filtering; exclude password from response  |
+| GET    | /api/users/:id    | exclude password from response                                |
+| POST   | /api/users        | hash password, return user without password                   |
+| PUT    | /api/users/:id    | make all fields optional in validation; hash if password given |
+| DELETE | /api/users/:id    | soft-delete (set isActive = false) instead of hard delete     |
+
+=== Security Requirements ===
+- Hash passwords with bcrypt (cost factor 12)
+- Never return password in any response (use a toJSON transform or mapper)
+- JWT auth middleware for protected routes
+- Role-based access control for admin endpoints
+- Rate-limit auth-related endpoints (login/register: 5 req/min)

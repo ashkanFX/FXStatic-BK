@@ -4,18 +4,48 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Item {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-}
+ 
 
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String?
   password  String
+  role      Role     @default(USER)
+  avatar    String?
+  bio       String?
+  isActive  Boolean  @default(true)
+  lastLogin DateTime?
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  jwts Jwt[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+model Jwt {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  type      JwtType  @default(ACCESS)
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("jwts")
+}
+
+enum JwtType {
+  ACCESS
 }
